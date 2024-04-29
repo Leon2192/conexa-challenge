@@ -11,12 +11,13 @@ import {
   IEpisode,
 } from "@/interfaces/interfaces";
 import Loader from "@/components/ui/Loader/Loader";
+import useResizeScreenCharacters from "../utils/hooks/useResizeScreenCharacters";
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const apiUrl = "https://rickandmortyapi.com/api/";
-  const charactersPerPage = 3;
+  const apiUrl = process.env.NEXT_PUBLIC_DATABASE_URL;
+  const [charactersPerPage, setCharactersPerPage] = useState(3);
 
   const [characters1, setCharacters1] = useState<ICharacter[]>([]);
   const [characters2, setCharacters2] = useState<ICharacter[]>([]);
@@ -31,12 +32,14 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   >(undefined);
   const [loading, setLoading] = useState(true);
 
+  useResizeScreenCharacters(setCharactersPerPage);
+
   // Obtener characters
   async function fetchCharacters(
     page: number,
     setter: React.Dispatch<ICharacter[]>
   ) {
-    setLoading(true); // Indicar que se está cargando
+    setLoading(true);
     try {
       const response = await fetch(`${apiUrl}character?page=${page}`);
       if (!response.ok) {
@@ -45,8 +48,8 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const data = await response.json();
       setTimeout(() => {
         setter(data.results);
-        setLoading(false); // Después de obtener los datos, indicar que ya no se está cargando
-      }, 1500);
+        setLoading(false);
+      }, 1000);
     } catch (error) {
       console.error("Error fetching characters:", error);
     }
@@ -58,14 +61,46 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [currentPage1, currentPage2]);
 
   const handleNextPage = () => {
-    setCurrentPage1((prevPage) => prevPage + 1);
-    setCurrentPage2((prevPage) => prevPage + 1);
+    const nextPage1 = currentPage1 + 1;
+    if (nextPage1 === currentPage2) {
+      setCurrentPage1(nextPage1 + 1);
+    } else {
+      setCurrentPage1(nextPage1);
+    }
+    setSelectedCharacter(undefined);
+  };
+
+  const handleNextPage2 = () => {
+    const nextPage2 = currentPage2 + 1;
+    if (nextPage2 === currentPage1) {
+      setCurrentPage2(nextPage2 + 1);
+    } else {
+      setCurrentPage2(nextPage2);
+    }
+    setSelectedCharacter2(undefined);
   };
 
   const handlePrevPage = () => {
     if (currentPage1 > 1) {
-      setCurrentPage1((prevPage) => prevPage - 1);
-      setCurrentPage2((prevPage) => prevPage - 1);
+      const prevPage1 = currentPage1 - 1;
+      if (prevPage1 === currentPage2) {
+        setCurrentPage1(prevPage1 - 1);
+      } else {
+        setCurrentPage1(prevPage1);
+      }
+      setSelectedCharacter(undefined);
+    }
+  };
+
+  const handlePrevPage2 = () => {
+    if (currentPage2 > 1) {
+      const prevPage2 = currentPage2 - 1;
+      if (prevPage2 === currentPage1) {
+        setCurrentPage2(prevPage2 - 1);
+      } else {
+        setCurrentPage2(prevPage2);
+      }
+      setSelectedCharacter2(undefined);
     }
   };
 
@@ -85,6 +120,22 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     fetchEpisodes();
+  }, [apiUrl]);
+
+  useEffect(() => {
+    const updateCharactersPerPage: () => void = () => {
+      if (window.innerWidth <= 768) {
+        setCharactersPerPage(1);
+      } else {
+        setCharactersPerPage(3);
+      }
+    };
+
+    updateCharactersPerPage();
+    window.addEventListener("resize", updateCharactersPerPage);
+    return () => {
+      window.removeEventListener("resize", updateCharactersPerPage);
+    };
   }, []);
 
   return (
@@ -104,15 +155,13 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setSelectedCharacter2,
         handleNextPage,
         handlePrevPage,
+        handleNextPage2,
+        handlePrevPage2,
         loading,
-        setLoading
+        setLoading,
       }}
     >
-      {loading ? (
-       <Loader />
-      ) : (
-        children
-      )}
+      {loading ? <Loader /> : children}
     </GlobalContext.Provider>
   );
 };

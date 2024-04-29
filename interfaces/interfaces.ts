@@ -35,6 +35,8 @@ export interface GlobalContextType {
   ) => Promise<void>;
   handleNextPage: () => void;
   handlePrevPage: () => void;
+  handleNextPage2: () => void;
+  handlePrevPage2: () => void;
   selectedCharacter: ICharacter | undefined;
   setSelectedCharacter: React.Dispatch<
     React.SetStateAction<ICharacter | undefined>
