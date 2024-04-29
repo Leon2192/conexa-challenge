@@ -24,7 +24,6 @@ const CharacterList = () => {
           <button onClick={handlePrevPage} disabled={currentPage1 === 1}>
             <MdKeyboardDoubleArrowLeft color="red" />
           </button>
-
           <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-600 text-white">
             {currentPage1}
           </span>
@@ -32,7 +31,7 @@ const CharacterList = () => {
             <MdKeyboardDoubleArrowRight color="red" />
           </button>
         </div>
-        <div className="flex flex-wrap justify-center">
+        <div className="flex justify-center gap-4">
           {renderCharacters(characters1)}
         </div>
       </div>
@@ -50,10 +49,8 @@ const CharacterList = () => {
             <MdKeyboardDoubleArrowRight color="red" />
           </button>
         </div>
-        <div className="flex flex-wrap justify-center">
-          <div className="flex flex-wrap justify-center">
-            {renderCharacters2(characters2)}
-          </div>
+        <div className="flex justify-center gap-4">
+          {renderCharacters2(characters2)}
         </div>
       </div>
     </div>
