@@ -4,7 +4,7 @@ import Episode from "../Episode/Episode";
 
 interface EpisodeListProps {
   episodes: IEpisode[];
-  hasFilteredEpisodes: boolean; 
+  hasFilteredEpisodes: boolean;
 }
 
 const EpisodeList: React.FC<EpisodeListProps> = ({
@@ -18,7 +18,7 @@ const EpisodeList: React.FC<EpisodeListProps> = ({
       <p className="text-white text-center">
         {hasFilteredEpisodes
           ? "No se han encontrado episodios."
-          : "Aquí verás los episodios en los que aparezcan los personajes que selecciones."}
+          : "Here you will see the episodes in which the characters you select appear."}
       </p>
     )}
   </div>

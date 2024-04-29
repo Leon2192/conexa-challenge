@@ -33,12 +33,12 @@ const EpisodesContainer: React.FC = () => {
 
   return (
     <>
-      <div className="text-center mb-4 md:hidden">
+      <div className="text-center mb-4">
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Image
             src="/logo.png"
             alt="Logo"
-            width={220}
+            width={250}
             height={220}
             className="rounded-full"
           />
@@ -48,7 +48,7 @@ const EpisodesContainer: React.FC = () => {
       <div>
         <div className="px-4 py-4 border-b border-gray-200">
           <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
-            Character #1
+            Episodes Character #1
           </h2>
           <EpisodeList
             episodes={character1Episodes}
@@ -58,7 +58,7 @@ const EpisodesContainer: React.FC = () => {
 
         <div className="px-4 py-4 border-b border-gray-200">
           <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
-            Character #1 & Character #2 - Shared Episodes
+            Shared Episodes Character #1 & Character #2
           </h2>
           <EpisodeList
             episodes={sharedEpisodes}
@@ -68,7 +68,7 @@ const EpisodesContainer: React.FC = () => {
 
         <div className="px-4 py-4 border-b border-gray-200">
           <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
-            Character #2 - Only Episodes
+            Episodes Character #2
           </h2>
           <EpisodeList
             episodes={character2Episodes}
