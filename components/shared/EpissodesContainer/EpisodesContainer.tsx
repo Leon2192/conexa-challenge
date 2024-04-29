@@ -26,6 +26,11 @@ const EpisodesContainer: React.FC = () => {
         )
       : [];
 
+  const hasFilteredEpisodes =
+    character1Episodes.length > 0 ||
+    character2Episodes.length > 0 ||
+    sharedEpisodes.length > 0;
+
   return (
     <>
       <div className="text-center mb-4 md:hidden">
@@ -33,8 +38,8 @@ const EpisodesContainer: React.FC = () => {
           <Image
             src="/logo.png"
             alt="Logo"
-            width={200}
-            height={190}
+            width={220}
+            height={220}
             className="rounded-full"
           />
         </div>
@@ -42,24 +47,33 @@ const EpisodesContainer: React.FC = () => {
       <h1 className="text-center mt-4 text-xl">Episode list</h1>
       <div>
         <div className="px-4 py-4 border-b border-gray-200">
-          <h2 className="text-center mb-2 text-white text-3xl">
-            Character #1 - Only Episodes
+          <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
+            Character #1
           </h2>
-          <EpisodeList episodes={character1Episodes} />
+          <EpisodeList
+            episodes={character1Episodes}
+            hasFilteredEpisodes={hasFilteredEpisodes}
+          />
         </div>
 
         <div className="px-4 py-4 border-b border-gray-200">
-          <h2 className="text-center mb-2 text-white text-3xl">
+          <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
             Character #1 & Character #2 - Shared Episodes
           </h2>
-          <EpisodeList episodes={sharedEpisodes} />
+          <EpisodeList
+            episodes={sharedEpisodes}
+            hasFilteredEpisodes={hasFilteredEpisodes}
+          />
         </div>
 
         <div className="px-4 py-4 border-b border-gray-200">
-          <h2 className="text-center mb-2 text-white text-3xl">
+          <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
             Character #2 - Only Episodes
           </h2>
-          <EpisodeList episodes={character2Episodes} />
+          <EpisodeList
+            episodes={character2Episodes}
+            hasFilteredEpisodes={hasFilteredEpisodes}
+          />
         </div>
       </div>
       <div>
@@ -78,7 +92,7 @@ const EpisodesContainer: React.FC = () => {
       </div>
       <a
         href="#characterList"
-        className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-4 mx-auto block md:hidden"
+        className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
       >
         ¡Vamos a jugar!
       </a>
