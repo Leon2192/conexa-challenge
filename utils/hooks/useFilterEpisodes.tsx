@@ -12,6 +12,16 @@ const useFilterEpisodes = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
+    const handleScrollToTop = () => {
+      if (selectedCharacter && selectedCharacter2 && window.innerWidth <= 768) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    handleScrollToTop();
+  }, [selectedCharacter, selectedCharacter2]);
+
+  useEffect(() => {
     const filteredCharacter1Episodes = episodes.filter((episode) => {
       const characterUrl = selectedCharacter?.url;
       return characterUrl && episode.characters.includes(characterUrl);

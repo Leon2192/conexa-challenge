@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useFilterEpisodes from "../../../utils/hooks/useFilterEpisodes";
 import EpisodeList from "../EpisodeList/EpisodeList";
@@ -9,6 +9,18 @@ const EpisodesContainer: React.FC = () => {
   const { loadingSharedEpisodes } = useGlobalContext();
   const { selectedCharacter, selectedCharacter2, episodes } =
     useFilterEpisodes();
+
+  const [showLoader, setShowLoader] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(true);
+
+  useEffect(() => {
+    setShowLoader(true);
+
+    const timeout = setTimeout(() => {
+      setShowLoader(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, [selectedCharacter, selectedCharacter2]);
 
   const character1Episodes = episodes.filter((episode) => {
     const characterUrl = selectedCharacter?.url;
@@ -34,6 +46,11 @@ const EpisodesContainer: React.FC = () => {
     character2Episodes.length > 0 ||
     sharedEpisodes.length > 0;
 
+  const handlePlayButtonClick = () => {
+    setShowPlayButton(false);
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  };
+
   return (
     <>
       <div className="text-center mb-4">
@@ -47,7 +64,7 @@ const EpisodesContainer: React.FC = () => {
           />
         </div>
       </div>
-      {loadingSharedEpisodes ? (
+      {loadingSharedEpisodes || showLoader ? (
         <Loader />
       ) : (
         <>
@@ -99,12 +116,15 @@ const EpisodesContainer: React.FC = () => {
               </p>
             ) : null}
           </div>
-          <a
-            href="#characterList"
-            className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
-          >
-            ¡Vamos a jugar!
-          </a>
+          {showPlayButton && (
+            <a
+              href="#characterList"
+              className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
+              onClick={handlePlayButtonClick}
+            >
+              ¡Vamos a jugar!
+            </a>
+          )}
         </>
       )}
     </>
