@@ -10,7 +10,6 @@ import {
   ICharacter,
   IEpisode,
 } from "@/interfaces/interfaces";
-import Loader from "@/components/ui/Loader/Loader";
 import useResizeScreenCharacters from "../utils/hooks/useResizeScreenCharacters";
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -31,6 +30,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     ICharacter | undefined
   >(undefined);
   const [loading, setLoading] = useState(true);
+  const [loadingSharedEpisodes, setLoadingSharedEpisodes] = useState(false);
 
   useResizeScreenCharacters(setCharactersPerPage);
 
@@ -49,7 +49,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setTimeout(() => {
         setter(data.results);
         setLoading(false);
-      }, 1000);
+      }, 200);
     } catch (error) {
       console.error("Error fetching characters:", error);
     }
@@ -57,8 +57,11 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     fetchCharacters(currentPage1, setCharacters1);
+  }, [currentPage1]);
+
+  useEffect(() => {
     fetchCharacters(currentPage2, setCharacters2);
-  }, [currentPage1, currentPage2]);
+  }, [currentPage2]);
 
   const handleNextPage = () => {
     const nextPage1 = currentPage1 + 1;
@@ -108,6 +111,8 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
+        setLoading(true);
+        setLoadingSharedEpisodes(true);
         const response = await fetch(`${apiUrl}episode`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -116,6 +121,9 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setEpisodes(data.results);
       } catch (error) {
         console.error("Error fetching episodes:", error);
+      } finally {
+        setLoading(false);
+        setLoadingSharedEpisodes(false);
       }
     };
 
@@ -159,9 +167,11 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         handlePrevPage2,
         loading,
         setLoading,
+        loadingSharedEpisodes,
+        setLoadingSharedEpisodes,
       }}
     >
-      {loading ? <Loader /> : children}
+      {children}
     </GlobalContext.Provider>
   );
 };

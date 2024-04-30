@@ -47,4 +47,6 @@ export interface GlobalContextType {
   >;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loadingSharedEpisodes: boolean;
+  setLoadingSharedEpisodes: React.Dispatch<React.SetStateAction<boolean>>;
 }

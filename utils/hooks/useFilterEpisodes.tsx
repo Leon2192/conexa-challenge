@@ -3,8 +3,12 @@ import { useSnackbar } from "notistack";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 const useFilterEpisodes = () => {
-  const { episodes, selectedCharacter, selectedCharacter2 } =
-    useGlobalContext();
+  const {
+    episodes,
+    selectedCharacter,
+    selectedCharacter2,
+    setLoadingSharedEpisodes,
+  } = useGlobalContext();
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -31,6 +35,10 @@ const useFilterEpisodes = () => {
           horizontal: "right",
         },
       });
+      setLoadingSharedEpisodes(true);
+      setTimeout(() => {
+        setLoadingSharedEpisodes(false);
+      }, 500);
     } else if (selectedCharacter && selectedCharacter2) {
       enqueueSnackbar(
         "¡Lo sentimos! No encontramos coincidencias entre estos personajes.",
@@ -43,7 +51,13 @@ const useFilterEpisodes = () => {
         }
       );
     }
-  }, [selectedCharacter, selectedCharacter2, episodes, enqueueSnackbar]);
+  }, [
+    selectedCharacter,
+    selectedCharacter2,
+    episodes,
+    enqueueSnackbar,
+    setLoadingSharedEpisodes,
+  ]);
 
   return {
     selectedCharacter,

@@ -2,8 +2,11 @@ import React from "react";
 import Image from "next/image";
 import useFilterEpisodes from "../../../utils/hooks/useFilterEpisodes";
 import EpisodeList from "../EpisodeList/EpisodeList";
+import { useGlobalContext } from "@/context/GlobalContext";
+import Loader from "@/components/ui/Loader/Loader";
 
 const EpisodesContainer: React.FC = () => {
+  const { loadingSharedEpisodes } = useGlobalContext();
   const { selectedCharacter, selectedCharacter2, episodes } =
     useFilterEpisodes();
 
@@ -44,58 +47,66 @@ const EpisodesContainer: React.FC = () => {
           />
         </div>
       </div>
-      <h1 className="text-center mt-4 text-xl">Episode list</h1>
-      <div>
-        <div className="px-4 py-4 border-b border-gray-200">
-          <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
-            Episodes Character #1
-          </h2>
-          <EpisodeList
-            episodes={character1Episodes}
-            hasFilteredEpisodes={hasFilteredEpisodes}
-          />
-        </div>
+      {loadingSharedEpisodes ? (
+        <Loader />
+      ) : (
+        <>
+          <h1 className="text-center mt-4 text-xl   text-white">
+            Episode list
+          </h1>
+          <div>
+            <div className="px-4 py-4 border-b border-gray-200">
+              <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
+                Episodes Character #1
+              </h2>
+              <EpisodeList
+                episodes={character1Episodes}
+                hasFilteredEpisodes={hasFilteredEpisodes}
+              />
+            </div>
 
-        <div className="px-4 py-4 border-b border-gray-200">
-          <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
-            Shared Episodes Character #1 & Character #2
-          </h2>
-          <EpisodeList
-            episodes={sharedEpisodes}
-            hasFilteredEpisodes={hasFilteredEpisodes}
-          />
-        </div>
+            <div className="px-4 py-4 border-b border-gray-200">
+              <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
+                Shared Episodes Character #1 & Character #2
+              </h2>
+              <EpisodeList
+                episodes={sharedEpisodes}
+                hasFilteredEpisodes={hasFilteredEpisodes}
+              />
+            </div>
 
-        <div className="px-4 py-4 border-b border-gray-200">
-          <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
-            Episodes Character #2
-          </h2>
-          <EpisodeList
-            episodes={character2Episodes}
-            hasFilteredEpisodes={hasFilteredEpisodes}
-          />
-        </div>
-      </div>
-      <div>
-        {selectedCharacter || selectedCharacter2 ? (
-          <p className="text-white text-center mt-4">
-            Buscaremos episodios en los que aparezcan
-            <span className="text-orange-600 font-bold text-xl underline">
-              {selectedCharacter?.name}
-            </span>
-            {" , "}
-            <span className="text-orange-600 font-bold text-xl underline">
-              {selectedCharacter2?.name}
-            </span>
-          </p>
-        ) : null}
-      </div>
-      <a
-        href="#characterList"
-        className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
-      >
-        ¡Vamos a jugar!
-      </a>
+            <div className="px-4 py-4 border-b border-gray-200">
+              <h2 className="text-center mb-2 text-white text-2xl sm:text-3xl">
+                Episodes Character #2
+              </h2>
+              <EpisodeList
+                episodes={character2Episodes}
+                hasFilteredEpisodes={hasFilteredEpisodes}
+              />
+            </div>
+          </div>
+          <div>
+            {selectedCharacter || selectedCharacter2 ? (
+              <p className="text-white text-center mt-4">
+                Buscaremos episodios en los que aparezcan
+                <span className="text-orange-600 font-bold text-xl underline">
+                  {selectedCharacter?.name}
+                </span>
+                {" , "}
+                <span className="text-orange-600 font-bold text-xl underline">
+                  {selectedCharacter2?.name}
+                </span>
+              </p>
+            ) : null}
+          </div>
+          <a
+            href="#characterList"
+            className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
+          >
+            ¡Vamos a jugar!
+          </a>
+        </>
+      )}
     </>
   );
 };
