@@ -8,6 +8,7 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import useCharacterRenderer from "@/utils/hooks/useCharacterRender";
 import { PiAlienFill } from "react-icons/pi";
 import Loader from "@/components/ui/Loader/Loader";
+import Button from "@/components/ui/Buttons/Button";
 
 const CharacterList = () => {
   const {
@@ -26,7 +27,6 @@ const CharacterList = () => {
   } = useGlobalContext();
 
   const { renderCharacters, renderCharacters2 } = useCharacterRenderer();
-
 
   return (
     <>
@@ -85,12 +85,7 @@ const CharacterList = () => {
       )}
       {selectedCharacter || selectedCharacter2 ? (
         <div className="flex justify-center mt-4">
-          <button
-            onClick={resetSelectedCharacters}
-            className="text-white bg-gradient-to-r from-red-500 to-purple-700 px-6 py-3 rounded-md shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300"
-          >
-            Restart
-          </button>
+          <Button onClick={resetSelectedCharacters}>Restart</Button>
         </div>
       ) : null}
     </>

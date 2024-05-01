@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ICharacter } from "@/interfaces/interfaces";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useSnackbar } from "notistack";

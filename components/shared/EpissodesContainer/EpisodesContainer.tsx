@@ -3,6 +3,7 @@ import Image from "next/image";
 import EpisodeList from "../EpisodeList/EpisodeList";
 import { useGlobalContext } from "@/context/GlobalContext";
 import Loader from "@/components/ui/Loader/Loader";
+import ButtonPlay from "@/components/ui/Buttons/ButtonPlay";
 
 const EpisodesContainer: React.FC = () => {
   const {
@@ -112,13 +113,9 @@ const EpisodesContainer: React.FC = () => {
           )}
 
           {showPlayButton && (
-            <a
-              href="#characterList"
-              className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
-              onClick={handlePlayButtonClick}
-            >
+            <ButtonPlay href="#characterList" onClick={handlePlayButtonClick}>
               Let&apos;s play!
-            </a>
+            </ButtonPlay>
           )}
         </>
       )}

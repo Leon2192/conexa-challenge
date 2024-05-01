@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import React from "react";
 import { ICharacter } from "@/interfaces/interfaces";
@@ -22,6 +20,8 @@ export function Card({ name, status, species, image, isSelected }: ICharacter) {
           width={200}
           height={200}
           className="object-cover rounded-l-lg h-full"
+          loading="eager"
+          priority
         />
       </div>
       <div className="flex-1 p-4">

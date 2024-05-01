@@ -68,18 +68,20 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setLoading(true);
       try {
         const response = await axios.get(`${apiUrl}/character?page=${page}`);
-
         const data = response.data;
-        setter(data.results);
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem(
-            `characters${page}`,
-            JSON.stringify(data.results)
-          );
-        }
+       
+        setTimeout(() => {
+          setter(data.results);
+          if (typeof localStorage !== "undefined") {
+            localStorage.setItem(
+              `characters${page}`,
+              JSON.stringify(data.results)
+            );
+          }
+          setLoading(false);
+        }, 200); 
       } catch (error) {
         console.error("Error fetching characters:", error);
-      } finally {
         setLoading(false);
       }
     };
