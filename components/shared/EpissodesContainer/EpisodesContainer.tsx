@@ -106,7 +106,7 @@ const EpisodesContainer: React.FC = () => {
               </h1>
               <p className="text-center text-2xl mt-6">Sounds easy, right?</p>
               <p className="text-center text-3xl mt-8 font-bold text-orange-700">
-                LET'S GO!
+                LET&apos;S GO!
               </p>
             </div>
           )}
@@ -117,7 +117,7 @@ const EpisodesContainer: React.FC = () => {
               className="text-white bg-gradient-to-r from-red-500 to-purple-700 text-center py-2 px-3 rounded-full mt-8 mx-auto block mb-5 md:hidden"
               onClick={handlePlayButtonClick}
             >
-              Let's play!
+              Let&apos;s play!
             </a>
           )}
         </>
