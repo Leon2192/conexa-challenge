@@ -51,4 +51,5 @@ npm install
 
 ## Estructura
 
-![Documento](https://raw.githubusercontent.com/Leon2192/conexa-challenge/main/Doc.png)
+![Documento](https://raw.githubusercontent.com/Leon2192/conexa-challenge/main/public/Doc.png)
+
