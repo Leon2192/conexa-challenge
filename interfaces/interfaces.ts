@@ -29,24 +29,24 @@ export interface GlobalContextType {
   charactersPerPage: number;
   episodes: IEpisode[];
   setEpisodes: React.Dispatch<IEpisode[]>;
-  fetchCharacters: (
-    page: number,
-    setter: React.Dispatch<ICharacter[]>
-  ) => Promise<void>;
   handleNextPage: () => void;
   handlePrevPage: () => void;
   handleNextPage2: () => void;
   handlePrevPage2: () => void;
-  selectedCharacter: ICharacter | undefined;
-  setSelectedCharacter: React.Dispatch<
-    React.SetStateAction<ICharacter | undefined>
-  >;
-  selectedCharacter2: ICharacter | undefined;
+  selectedCharacter: ICharacter | null;
+  setSelectedCharacter: React.Dispatch<React.SetStateAction<ICharacter | null>>;
+  selectedCharacter2: ICharacter | null;
   setSelectedCharacter2: React.Dispatch<
-    React.SetStateAction<ICharacter | undefined>
+    React.SetStateAction<ICharacter | null>
   >;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   loadingSharedEpisodes: boolean;
   setLoadingSharedEpisodes: React.Dispatch<React.SetStateAction<boolean>>;
+  filterEpisodes: {
+    character1Episodes: IEpisode[];
+    character2Episodes: IEpisode[];
+    sharedEpisodes: IEpisode[];
+  };
+  resetSelectedCharacters: () => void;
 }

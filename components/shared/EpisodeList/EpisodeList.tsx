@@ -17,8 +17,8 @@ const EpisodeList: React.FC<EpisodeListProps> = ({
     ) : (
       <p className="text-white text-center">
         {hasFilteredEpisodes
-          ? "No se han encontrado episodios."
-          : "Here you will see the episodes in which the characters you select appear."}
+          ? "Here you will see the episodes in which the characters you select appear."
+          : "No episodes were found"}
       </p>
     )}
   </div>

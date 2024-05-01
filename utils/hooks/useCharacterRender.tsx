@@ -19,7 +19,7 @@ const useCharacterRenderer = () => {
     setCharacter: React.Dispatch<React.SetStateAction<ICharacter | undefined>>
   ) => {
     setCharacter(character);
-    enqueueSnackbar(`${character.name} seleccionado`, { variant: "success" });
+    enqueueSnackbar(`${character.name} selected`, { variant: "success" });
   };
 
   const renderCharacters = (characters: ICharacter[]) => {

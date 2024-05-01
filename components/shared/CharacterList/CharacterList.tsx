@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
@@ -20,9 +20,13 @@ const CharacterList = () => {
     handlePrevPage2,
     handleNextPage2,
     loading,
+    selectedCharacter,
+    selectedCharacter2,
+    resetSelectedCharacters,
   } = useGlobalContext();
 
   const { renderCharacters, renderCharacters2 } = useCharacterRenderer();
+
 
   return (
     <>
@@ -31,20 +35,24 @@ const CharacterList = () => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col" id="characterList">
+        <div
+          className="flex flex-col"
+          id="characterList"
+          data-testid="character-list"
+        >
           <div className="mb-8">
             <h2 className="text-center text-3xl text-white">
               Character #1 List
             </h2>
             <div className="mt-4 flex justify-around mb-4">
               <button onClick={handlePrevPage} disabled={currentPage1 === 1}>
-                <MdKeyboardDoubleArrowLeft color="red" />
+                <MdKeyboardDoubleArrowLeft color="red" size={"1.5em"} />
               </button>
               <span className="text-xs font-bold px-1 py-1 rounded-full bg-red-600 text-white">
-                <PiAlienFill size={"1em"} />
+                <PiAlienFill size={"1.5em"} />
               </span>
               <button onClick={handleNextPage}>
-                <MdKeyboardDoubleArrowRight color="red" />
+                <MdKeyboardDoubleArrowRight color="red" size={"1.5em"} />
               </button>
             </div>
 
@@ -58,14 +66,14 @@ const CharacterList = () => {
               Character #2 List
             </h2>
             <div className="mt-4 flex justify-around mb-4">
-              <button onClick={handlePrevPage2} disabled={currentPage2 === 1}>
-                <MdKeyboardDoubleArrowLeft color="red" />
+              <button onClick={handlePrevPage2} disabled={currentPage2 <= 2}>
+                <MdKeyboardDoubleArrowLeft color="red" size={"1.5em"} />
               </button>
               <span className="text-xs font-bold px-1 py-1 rounded-full bg-red-600 text-white">
-                <PiAlienFill size={"1em"} />
+                <PiAlienFill size={"1.5em"} />
               </span>
               <button onClick={handleNextPage2}>
-                <MdKeyboardDoubleArrowRight color="red" />
+                <MdKeyboardDoubleArrowRight size={"1.5em"} color="red" />
               </button>
             </div>
 
@@ -75,6 +83,16 @@ const CharacterList = () => {
           </div>
         </div>
       )}
+      {selectedCharacter || selectedCharacter2 ? (
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={resetSelectedCharacters}
+            className="text-white bg-gradient-to-r from-red-500 to-purple-700 px-6 py-3 rounded-md shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300"
+          >
+            Restart
+          </button>
+        </div>
+      ) : null}
     </>
   );
 };

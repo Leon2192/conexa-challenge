@@ -1,79 +1,44 @@
-import { useEffect } from "react";
-import { useSnackbar } from "notistack";
+import { useMemo } from "react";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 const useFilterEpisodes = () => {
-  const {
-    episodes,
-    selectedCharacter,
-    selectedCharacter2,
-    setLoadingSharedEpisodes,
-  } = useGlobalContext();
-  const { enqueueSnackbar } = useSnackbar();
+  const { episodes, selectedCharacter, selectedCharacter2 } =
+    useGlobalContext();
 
-  useEffect(() => {
-    const handleScrollToTop = () => {
-      if (selectedCharacter && selectedCharacter2 && window.innerWidth <= 768) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    };
-
-    handleScrollToTop();
-  }, [selectedCharacter, selectedCharacter2]);
-
-  useEffect(() => {
-    const filteredCharacter1Episodes = episodes.filter((episode) => {
-      const characterUrl = selectedCharacter?.url;
-      return characterUrl && episode.characters.includes(characterUrl);
-    });
-
-    const filteredCharacter2Episodes = selectedCharacter2
-      ? episodes.filter((episode) => {
-          const characterUrl = selectedCharacter2?.url;
-          return characterUrl && episode.characters.includes(characterUrl);
-        })
+  const filterResult = useMemo(() => {
+    const character1Episodes = selectedCharacter
+      ? episodes.filter(
+          (episode) =>
+            selectedCharacter.url &&
+            episode.characters.includes(selectedCharacter.url)
+        )
       : [];
 
-    if (
-      filteredCharacter1Episodes.length > 0 &&
-      filteredCharacter2Episodes.length > 0
-    ) {
-      enqueueSnackbar("¡GENIAL! Hay episodios con ambos personajes.", {
-        variant: "success",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "right",
-        },
-      });
-      setLoadingSharedEpisodes(true);
-      setTimeout(() => {
-        setLoadingSharedEpisodes(false);
-      }, 500);
-    } else if (selectedCharacter && selectedCharacter2) {
-      enqueueSnackbar(
-        "¡Lo sentimos! No encontramos coincidencias entre estos personajes.",
-        {
-          variant: "warning",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "right",
-          },
-        }
-      );
-    }
-  }, [
-    selectedCharacter,
-    selectedCharacter2,
-    episodes,
-    enqueueSnackbar,
-    setLoadingSharedEpisodes,
-  ]);
+    const character2Episodes = selectedCharacter2
+      ? episodes.filter(
+          (episode) =>
+            selectedCharacter2.url &&
+            episode.characters.includes(selectedCharacter2.url)
+        )
+      : [];
 
-  return {
-    selectedCharacter,
-    selectedCharacter2,
-    episodes,
-  };
+    const sharedEpisodes =
+      selectedCharacter && selectedCharacter2
+        ? character1Episodes.filter((episode) =>
+            episode.characters.includes(selectedCharacter2.url)
+          )
+        : [];
+
+    console.log(sharedEpisodes);
+
+    return {
+      character1Episodes,
+      character2Episodes,
+      sharedEpisodes,
+    };
+  }, [selectedCharacter, selectedCharacter2]);
+
+  return filterResult;
 };
 
 export default useFilterEpisodes;
