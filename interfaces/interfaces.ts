@@ -8,7 +8,7 @@ export interface ICharacter {
   image: string;
   url: string;
   onClick?: () => void;
-  isSelected?: boolean;
+  isSelected?: boolean | null | undefined;
 }
 
 export interface IEpisode {

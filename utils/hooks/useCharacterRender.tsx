@@ -16,7 +16,7 @@ const useCharacterRenderer = () => {
 
   const handleCharacterSelection = (
     character: ICharacter,
-    setCharacter: React.Dispatch<React.SetStateAction<ICharacter | undefined>>
+    setCharacter: React.Dispatch<React.SetStateAction<ICharacter | null>>
   ) => {
     setCharacter(character);
     enqueueSnackbar(`${character.name} selected`, { variant: "success" });
