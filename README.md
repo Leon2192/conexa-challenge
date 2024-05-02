@@ -1,6 +1,6 @@
 
 # CONEXA CHALLENGE 
-
+[DEPLOY 🚀](https://conexa-challenge-one.vercel.app/)
 
 ## 🛠 Skills
 React + Next js + Typescript + Tailwindss
