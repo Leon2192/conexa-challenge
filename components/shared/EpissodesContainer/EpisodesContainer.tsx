@@ -101,7 +101,7 @@ const EpisodesContainer: React.FC = () => {
           ) : (
             <div className="justify-center text-white">
               <h1 className="text-center font-bold text-orange-600 text-3xl sm:text-3xl mx-4 md:mx-8">
-                Select a character number #1 and a character #2 and discover in
+                Select a character #1 and a character #2 and discover in
                 which episodes of the Rick & Morty series each one appears
                 individually and sharing episodes
               </h1>
