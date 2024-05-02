@@ -1,5 +1,3 @@
-import { Dispatch } from "react";
-
 export interface ICharacter {
   id?: number;
   name: string;
@@ -49,4 +47,11 @@ export interface GlobalContextType {
     sharedEpisodes: IEpisode[];
   };
   resetSelectedCharacters: () => void;
+  totalPages1: number;
+  totalPages2: number;
+  handleCharacterSelection: (
+    character: ICharacter,
+    setCharacter: React.Dispatch<React.SetStateAction<ICharacter | null>>,
+    characterNumber: number
+  ) => void;
 }

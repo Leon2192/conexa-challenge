@@ -29,8 +29,6 @@ const useFilterEpisodes = () => {
           )
         : [];
 
-    console.log(sharedEpisodes);
-
     return {
       character1Episodes,
       character2Episodes,

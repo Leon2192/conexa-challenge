@@ -6,14 +6,14 @@ import React, {
   ReactNode,
   useMemo,
 } from "react";
+import { enqueueSnackbar } from "notistack";
+import axios from "axios";
 import {
   GlobalContextType,
   ICharacter,
   IEpisode,
 } from "@/interfaces/interfaces";
 import useResizeScreenCharacters from "../utils/hooks/useResizeScreenCharacters";
-import { enqueueSnackbar } from "notistack";
-import axios from "axios";
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
@@ -22,34 +22,9 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [charactersPerPage, setCharactersPerPage] = useState(3);
   const [loading, setLoading] = useState(true);
   const [loadingSharedEpisodes, setLoadingSharedEpisodes] = useState(false);
-
-  const [characters1, setCharacters1] = useState<ICharacter[]>(() => {
-    if (typeof localStorage !== "undefined") {
-      const cachedCharacters = localStorage.getItem("characters1");
-      return cachedCharacters ? JSON.parse(cachedCharacters) : [];
-    } else {
-      return [];
-    }
-  });
-
-  const [characters2, setCharacters2] = useState<ICharacter[]>(() => {
-    if (typeof localStorage !== "undefined") {
-      const cachedCharacters = localStorage.getItem("characters2");
-      return cachedCharacters ? JSON.parse(cachedCharacters) : [];
-    } else {
-      return [];
-    }
-  });
-
-  const [episodes, setEpisodes] = useState<IEpisode[]>(() => {
-    if (typeof localStorage !== "undefined") {
-      const cachedEpisodes = localStorage.getItem("episodes");
-      return cachedEpisodes ? JSON.parse(cachedEpisodes) : [];
-    } else {
-      return [];
-    }
-  });
-
+  const [characters1, setCharacters1] = useState<ICharacter[]>([]);
+  const [characters2, setCharacters2] = useState<ICharacter[]>([]);
+  const [episodes, setEpisodes] = useState<IEpisode[]>([]);
   const [currentPage1, setCurrentPage1] = useState(1);
   const [currentPage2, setCurrentPage2] = useState(2);
   const [selectedCharacter, setSelectedCharacter] = useState<ICharacter | null>(
@@ -69,17 +44,8 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       try {
         const response = await axios.get(`${apiUrl}/character?page=${page}`);
         const data = response.data;
-       
-        setTimeout(() => {
-          setter(data.results);
-          if (typeof localStorage !== "undefined") {
-            localStorage.setItem(
-              `characters${page}`,
-              JSON.stringify(data.results)
-            );
-          }
-          setLoading(false);
-        }, 200); 
+        setter(data.results);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching characters:", error);
         setLoading(false);
@@ -97,9 +63,6 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         const response = await axios.get(`${apiUrl}episode`);
         const data = response.data;
         setEpisodes(data.results);
-        if (typeof localStorage !== "undefined") {
-          localStorage.setItem("episodes", JSON.stringify(data.results));
-        }
       } catch (error) {
         console.error("Error fetching episodes:", error);
       } finally {
@@ -161,59 +124,23 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [selectedCharacter, selectedCharacter2]);
 
-  const handleNextPage = () => {
-    setLoading(true);
-    const nextPage1 = currentPage1 + 1;
-    if (nextPage1 === currentPage2) {
-      setCurrentPage1(nextPage1 + 1);
-    } else {
-      setCurrentPage1(nextPage1);
+  useEffect(() => {
+    const cachedCharacters1 = localStorage.getItem("characters1");
+    if (cachedCharacters1) {
+      setCharacters1(JSON.parse(cachedCharacters1));
     }
-    setSelectedCharacter(null);
-  };
+    const cachedCharacters2 = localStorage.getItem("characters2");
+    if (cachedCharacters2) {
+      setCharacters2(JSON.parse(cachedCharacters2));
+    }
+    const cachedEpisodes = localStorage.getItem("episodes");
+    if (cachedEpisodes) {
+      setEpisodes(JSON.parse(cachedEpisodes));
+    }
+  }, []);
 
-  const handleNextPage2 = () => {
-    setLoading(true);
-    const nextPage2 = currentPage2 + 1;
-    if (nextPage2 <= currentPage1) {
-      setCurrentPage2(currentPage1 + 1);
-    } else {
-      setCurrentPage2(nextPage2);
-    }
-    setSelectedCharacter2(null);
-  };
-
-  const handlePrevPage = () => {
-    setLoading(true);
-    if (currentPage1 > 1) {
-      const prevPage1 = currentPage1 - 1;
-      if (prevPage1 === currentPage2) {
-        if (currentPage2 > 1) {
-          setCurrentPage2(currentPage2 - 1);
-        } else {
-          setCurrentPage2(currentPage2 + 1);
-        }
-      }
-      setCurrentPage1(prevPage1);
-      setSelectedCharacter(null);
-    }
-  };
-
-  const handlePrevPage2 = () => {
-    setLoading(true);
-    if (currentPage2 > 1) {
-      const prevPage2 = currentPage2 - 1;
-      if (prevPage2 === currentPage1) {
-        if (currentPage1 > 1) {
-          setCurrentPage1(currentPage1 - 1);
-        } else {
-          setCurrentPage1(currentPage1 + 1);
-        }
-      }
-      setCurrentPage2(prevPage2);
-      setSelectedCharacter2(null);
-    }
-  };
+  const totalPages1 = Math.ceil(characters1.length / charactersPerPage);
+  const totalPages2 = Math.ceil(characters2.length / charactersPerPage);
 
   const filterEpisodes = useMemo(() => {
     const character1Episodes = selectedCharacter
@@ -246,6 +173,61 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
   }, [selectedCharacter, selectedCharacter2, episodes]);
 
+  const handleNextPage = () => {
+    const nextPage1 = currentPage1 + 1;
+    if (nextPage1 <= totalPages1) {
+      if (nextPage1 === currentPage2) {
+        setCurrentPage1(nextPage1 + 1);
+      } else {
+        setCurrentPage1(nextPage1);
+      }
+      setSelectedCharacter(null);
+    }
+  };
+  
+  const handleNextPage2 = () => {
+    const nextPage2 = currentPage2 + 1;
+    if (nextPage2 <= totalPages2) {
+      if (nextPage2 <= currentPage1) {
+        setCurrentPage2(currentPage1 + 1);
+      } else {
+        setCurrentPage2(nextPage2);
+      }
+      setSelectedCharacter2(null);
+    }
+  };
+  
+  const handlePrevPage = () => {
+    if (currentPage1 > 1) {
+      const prevPage1 = currentPage1 - 1;
+      if (prevPage1 === currentPage2) {
+        if (currentPage2 > 1) {
+          setCurrentPage2(currentPage2 - 1);
+        } else {
+          setCurrentPage2(currentPage2 + 1);
+        }
+      }
+      setCurrentPage1(prevPage1);
+      setSelectedCharacter(null);
+    }
+  };
+  
+  const handlePrevPage2 = () => {
+    if (currentPage2 > 1) {
+      const prevPage2 = currentPage2 - 1;
+      if (prevPage2 === currentPage1) {
+        if (currentPage1 > 1) {
+          setCurrentPage1(currentPage1 - 1);
+        } else {
+          setCurrentPage1(currentPage1 + 1);
+        }
+      }
+      setCurrentPage2(prevPage2);
+      setSelectedCharacter2(null);
+    }
+  };
+  
+
   const resetSelectedCharacters = () => {
     setSelectedCharacter(null);
     setSelectedCharacter2(null);
@@ -253,32 +235,49 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setCurrentPage2(2);
   };
 
+  const handleCharacterSelection = (
+    character: ICharacter,
+    setCharacter: React.Dispatch<React.SetStateAction<ICharacter | null>>,
+    characterNumber: number
+  ) => {
+    if (characterNumber === 1) {
+      setSelectedCharacter(character);
+    } else if (characterNumber === 2) {
+      setSelectedCharacter2(character);
+    }
+    enqueueSnackbar(`${character.name} selected`, { variant: "success" });
+  };
+  
+
+  const contextValue: GlobalContextType = {
+    characters1,
+    characters2,
+    currentPage1,
+    currentPage2,
+    charactersPerPage,
+    setSelectedCharacter,
+    setSelectedCharacter2,
+    handleNextPage,
+    handlePrevPage,
+    handleNextPage2,
+    handlePrevPage2,
+    loading,
+    setLoading,
+    loadingSharedEpisodes,
+    setLoadingSharedEpisodes,
+    filterEpisodes,
+    episodes,
+    setEpisodes,
+    selectedCharacter,
+    selectedCharacter2,
+    resetSelectedCharacters,
+    totalPages1,
+    totalPages2,
+    handleCharacterSelection
+  };
+
   return (
-    <GlobalContext.Provider
-      value={{
-        characters1,
-        characters2,
-        currentPage1,
-        currentPage2,
-        charactersPerPage,
-        setSelectedCharacter,
-        setSelectedCharacter2,
-        handleNextPage,
-        handlePrevPage,
-        handleNextPage2,
-        handlePrevPage2,
-        loading,
-        setLoading,
-        loadingSharedEpisodes,
-        setLoadingSharedEpisodes,
-        filterEpisodes,
-        episodes,
-        setEpisodes,
-        selectedCharacter,
-        selectedCharacter2,
-        resetSelectedCharacters,
-      }}
-    >
+    <GlobalContext.Provider value={contextValue}>
       {children}
     </GlobalContext.Provider>
   );
