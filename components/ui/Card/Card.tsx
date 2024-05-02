@@ -34,7 +34,7 @@ export function Card({ name, status, species, image, isSelected }: ICharacter) {
             {status}
           </p>
           <p className="text-white text-md dark:text-neutral-300">
-            <span className="font-semibold text-purple-600"> Species:</span>  
+            <span className="font-semibold text-purple-600"> Specie:</span>  
             {species}
           </p>
         </div>
