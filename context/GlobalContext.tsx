@@ -69,9 +69,15 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const fetchEpisodes = async () => {
       try {
         setLoadingSharedEpisodes(true);
-        const response = await axios.get(`${apiUrl}episode`);
-        const data = response.data;
-        setEpisodes(data.results);
+        const cachedEpisodes = localStorage.getItem("episodes");
+        if (cachedEpisodes) {
+          setEpisodes(JSON.parse(cachedEpisodes));
+        } else {
+          const response = await axios.get(`${apiUrl}episode`);
+          const data = response.data;
+          setEpisodes(data.results);
+          localStorage.setItem("episodes", JSON.stringify(data.results));
+        }
       } catch (error) {
         console.error("Error fetching episodes:", error);
       } finally {
