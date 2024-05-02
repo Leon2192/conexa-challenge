@@ -3,7 +3,7 @@
 [DEPLOY 🚀](https://conexa-challenge-one.vercel.app/)
 
 ## 🛠 Skills
-React + Next js + Typescript + Tailwindss
+React + Next js + Typescript + Tailwindcss
 
 
 
