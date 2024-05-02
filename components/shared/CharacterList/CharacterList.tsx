@@ -81,6 +81,22 @@ const CharacterList = () => {
               />
             </div>
           </div>
+
+          {(selectedCharacter || selectedCharacter2) && (
+            <div className="text-center mt-4 mb-4">
+              <p className="text-white">
+                Selected{" "}
+                <span className="text-orange-600 font-bold text-xl underline">
+                  {selectedCharacter?.name}
+                </span>
+                {" , "}
+                <span className="text-orange-600 font-bold text-xl underline">
+                  {selectedCharacter2?.name}
+                </span>
+              </p>
+            </div>
+          )}
+
           <div>
             <h2 className="text-center text-3xl text-white">
               Character #2 List
