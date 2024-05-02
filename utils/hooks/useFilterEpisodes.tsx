@@ -34,7 +34,7 @@ const useFilterEpisodes = () => {
       character2Episodes,
       sharedEpisodes,
     };
-  }, [selectedCharacter, selectedCharacter2]);
+  }, [episodes, selectedCharacter, selectedCharacter2]);
 
   return filterResult;
 };

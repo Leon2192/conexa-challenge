@@ -42,9 +42,18 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     ) => {
       setLoading(true);
       try {
-        const response = await axios.get(`${apiUrl}/character?page=${page}`);
-        const data = response.data;
-        setter(data.results);
+        const cachedData = localStorage.getItem(`charactersPage${page}`);
+        if (cachedData) {
+          setter(JSON.parse(cachedData));
+        } else {
+          const response = await axios.get(`${apiUrl}/character?page=${page}`);
+          const data = response.data;
+          setter(data.results);
+          localStorage.setItem(
+            `charactersPage${page}`,
+            JSON.stringify(data.results)
+          );
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching characters:", error);
@@ -122,6 +131,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         }
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCharacter, selectedCharacter2]);
 
   useEffect(() => {
@@ -184,7 +194,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setSelectedCharacter(null);
     }
   };
-  
+
   const handleNextPage2 = () => {
     const nextPage2 = currentPage2 + 1;
     if (nextPage2 <= totalPages2) {
@@ -196,7 +206,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setSelectedCharacter2(null);
     }
   };
-  
+
   const handlePrevPage = () => {
     if (currentPage1 > 1) {
       const prevPage1 = currentPage1 - 1;
@@ -211,7 +221,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setSelectedCharacter(null);
     }
   };
-  
+
   const handlePrevPage2 = () => {
     if (currentPage2 > 1) {
       const prevPage2 = currentPage2 - 1;
@@ -226,7 +236,6 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setSelectedCharacter2(null);
     }
   };
-  
 
   const resetSelectedCharacters = () => {
     setSelectedCharacter(null);
@@ -247,7 +256,6 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
     enqueueSnackbar(`${character.name} selected`, { variant: "success" });
   };
-  
 
   const contextValue: GlobalContextType = {
     characters1,
@@ -273,7 +281,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     resetSelectedCharacters,
     totalPages1,
     totalPages2,
-    handleCharacterSelection
+    handleCharacterSelection,
   };
 
   return (

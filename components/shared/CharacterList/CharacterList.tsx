@@ -26,6 +26,8 @@ const CharacterList = () => {
     selectedCharacter2,
     resetSelectedCharacters,
     charactersPerPage,
+    totalPages1,
+    totalPages2,
     setSelectedCharacter,
     setSelectedCharacter2,
   } = useGlobalContext();
@@ -47,19 +49,26 @@ const CharacterList = () => {
               Character #1 List
             </h2>
             <div className="mt-4 flex justify-around mb-4">
-              <Tooltip content="Previous Page">
-                <button onClick={handlePrevPage} disabled={currentPage1 === 1}>
-                  <MdKeyboardDoubleArrowLeft color="red" size={"1.5em"} />
-                </button>
-              </Tooltip>
+              {currentPage1 !== 1 && (
+                <Tooltip content="Previous Page">
+                  <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage1 === 1}
+                  >
+                    <MdKeyboardDoubleArrowLeft color="red" size={"1.5em"} />
+                  </button>
+                </Tooltip>
+              )}
               <span className="text-xs font-bold px-1 py-1 rounded-full bg-red-600 text-white">
                 <PiAlienFill size={"1.5em"} />
               </span>
-              <Tooltip content="Next Page">
-                <button onClick={handleNextPage}>
-                  <MdKeyboardDoubleArrowRight color="red" size={"1.5em"} />
-                </button>
-              </Tooltip>
+              {currentPage1 < totalPages1 && (
+                <Tooltip content="Next Page">
+                  <button onClick={handleNextPage}>
+                    <MdKeyboardDoubleArrowRight color="red" size={"1.5em"} />
+                  </button>
+                </Tooltip>
+              )}
             </div>
 
             <div className="flex justify-center gap-4">
@@ -72,25 +81,31 @@ const CharacterList = () => {
               />
             </div>
           </div>
-
           <div>
             <h2 className="text-center text-3xl text-white">
               Character #2 List
             </h2>
             <div className="mt-4 flex justify-around mb-4">
-              <Tooltip content="Previous Page">
-                <button onClick={handlePrevPage2} disabled={currentPage2 <= 2}>
-                  <MdKeyboardDoubleArrowLeft color="red" size={"1.5em"} />
-                </button>
-              </Tooltip>
+              {currentPage2 > 2 && (
+                <Tooltip content="Previous Page">
+                  <button
+                    onClick={handlePrevPage2}
+                    disabled={currentPage2 <= 2}
+                  >
+                    <MdKeyboardDoubleArrowLeft color="red" size={"1.5em"} />
+                  </button>
+                </Tooltip>
+              )}
               <span className="text-xs font-bold px-1 py-1 rounded-full bg-red-600 text-white">
                 <PiAlienFill size={"1.5em"} />
               </span>
-              <Tooltip content="Next Page">
-                <button onClick={handleNextPage2}>
-                  <MdKeyboardDoubleArrowRight size={"1.5em"} color="red" />
-                </button>
-              </Tooltip>
+              {currentPage2 < totalPages2 && (
+                <Tooltip content="Next Page">
+                  <button onClick={handleNextPage2}>
+                    <MdKeyboardDoubleArrowRight size={"1.5em"} color="red" />
+                  </button>
+                </Tooltip>
+              )}
             </div>
 
             <div className="flex justify-center gap-4">
