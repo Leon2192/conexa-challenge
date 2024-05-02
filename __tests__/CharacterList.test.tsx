@@ -10,6 +10,7 @@ describe("CharacterList", () => {
         <CharacterList />
       </GlobalProvider>
     );
+    
 
     await waitFor(() => {
       const characterListElement = screen.getByTestId("character-list");
