@@ -2,11 +2,13 @@
 # CONEXA CHALLENGE 
 [DEPLOY 🚀](https://conexa-challenge-one.vercel.app/)
 
+
+## Esta app
+Permite seleccionar un character #1 y un character #2. Una vez que se seleccionan los mismos, nos lista los episodios en los que aparece el character #1 de forma individual, el character #2 de forma individual y tambien en los que aparecen ambos characters juntos. Si aparecen juntos en por lo menos un episodio lanza una alerta que avisa que hay coincidencias, y sino otra que informa que no comparten episodios juntos.
+
+
 ## 🛠 Skills
 React + Next js + Typescript + Tailwindcss
-
-
-
 
 ![App Screenshot](https://raw.githubusercontent.com/Leon2192/conexa-challenge/main/public/snap.PNG)
 
