@@ -131,7 +131,7 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         }
       );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCharacter, selectedCharacter2]);
 
   useEffect(() => {
@@ -256,6 +256,15 @@ const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
     enqueueSnackbar(`${character.name} selected`, { variant: "success" });
   };
+
+  // Scroll to top en celulares
+  useEffect(() => {
+    if (selectedCharacter && selectedCharacter2) {
+      if (window.innerWidth <= 768) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+  }, [selectedCharacter, selectedCharacter2]);
 
   const contextValue: GlobalContextType = {
     characters1,
