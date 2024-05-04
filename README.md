@@ -1,5 +1,5 @@
 
-# CONEXA CHALLENGE 
+# CHARACTERS APP - Rick & Morty 
 [DEPLOY 🚀](https://conexa-challenge-one.vercel.app/)
 
 
