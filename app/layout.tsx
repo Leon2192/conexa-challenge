@@ -6,8 +6,8 @@ import { Gloria_Hallelujah } from "next/font/google";
 const gloria = Gloria_Hallelujah({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
-  title: "Conexa - Challenge ",
-  description: "Challenge desarrollado con Next js - Conexa",
+  title: "Rick & Morty - Characters",
+  description: "Veamos si hay episodios!",
   icons: {
     icon: "/logo.png",
   },
